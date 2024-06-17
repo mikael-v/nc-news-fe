@@ -17,7 +17,7 @@ function Articles() {
   return (
     <>
       <h1>All Articles</h1>
-      <ul id="all-articles">
+      <ul>
         {articles.map((article) => (
           <li key={article.article_id}>
             <h2>{article.title}</h2>
