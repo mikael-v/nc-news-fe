@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Comments from "./Comments";
 
 const newsApi = axios.create({
   baseURL: "https://nc-news-project-hvpy.onrender.com/api",
@@ -22,6 +23,7 @@ function OneArticle() {
       <img src={`${article.article_img_url}`} alt="article cover" />
       <p>{article.body}</p>
       <p>{article.topic}</p>
+      <Comments />
     </>
   );
 }
