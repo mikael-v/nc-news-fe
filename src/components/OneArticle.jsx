@@ -20,7 +20,7 @@ function OneArticle() {
     });
   }, [article_id]);
 
-  if (isLoading) {
+  if (isLoading === true) {
     return <h3>Loading Page...</h3>;
   }
 
