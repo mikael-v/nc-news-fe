@@ -22,7 +22,7 @@ function OneArticle() {
       <h2>{article.author}</h2>
       <img src={`${article.article_img_url}`} alt="article cover" />
       <p>{article.body}</p>
-      <p>{article.topic}</p>
+      <p>Topic: {article.topic}</p>
       <Comments />
     </>
   );

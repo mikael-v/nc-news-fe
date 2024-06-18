@@ -23,7 +23,7 @@ function Articles() {
             <h2>{article.title}</h2>
             <h3>{article.author}</h3>
             <img src={`${article.article_img_url}`} alt="article cover image" />
-            <p>{article.topic}</p>
+            <p>Topic: {article.topic}</p>
           </li>
         ))}
       </ul>

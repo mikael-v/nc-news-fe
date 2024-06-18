@@ -40,7 +40,7 @@ function Comments() {
         {comments.map((comment) => (
           <li key={comment.comment_id}>
             <p>author: {comment.author}</p>
-            <p>created at: {comment.created_at}</p>
+            <p>created at: {new Date(comment.created_at).toLocaleString()}</p>
             <p>{comment.body}</p>
             <div id="votes">
               <button
