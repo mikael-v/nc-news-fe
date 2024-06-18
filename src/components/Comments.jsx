@@ -11,6 +11,10 @@ function Comments() {
   const { article_id } = useParams();
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isShown, setIsShown] = useState(false);
+  const [addComment, setAddComment] = useState({});
+  const [commentBody, setCommentBody] = "";
+  const [author, setAuthor] = "";
 
   useEffect(() => {
     setIsLoading(true);
@@ -40,9 +44,42 @@ function Comments() {
     );
   }
 
+  function postComment(event) {
+    event.preventDefault();
+    setAddComment({
+      body: commentBody,
+      author: author,
+      votes: 0,
+      created_at: Date.now(),
+    });
+  }
+
+  function toggleShow() {
+    setIsShown(!isShown);
+  }
+
   return (
     <>
-      <h1>Comments</h1>
+      {console.log(Date.now())}
+      <div id="comments-bar">
+        <h1>Comments</h1>
+      </div>
+      <button id="post-button" type="button" onClick={toggleShow}>
+        {isShown ? "Hide Comment Form" : "Post Comment"}
+      </button>
+      {isShown && (
+        <fieldset id="comment-form">
+          <div id="username">
+            <label htmlFor="username">Username: </label>
+            <input required type="text" name="username" id="username" />
+          </div>
+          <label htmlFor="textbox">Comment:</label>
+          <textarea name="textbox" id="textbox" required />
+          <button type="submit" id="submit-comment" onClick={postComment}>
+            Post
+          </button>
+        </fieldset>
+      )}
       <ul id="comments-list">
         {comments.map((comment) => (
           <li key={comment.comment_id}>
