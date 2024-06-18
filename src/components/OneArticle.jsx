@@ -10,11 +10,19 @@ const newsApi = axios.create({
 function OneArticle() {
   const { article_id } = useParams();
   const [article, setArticle] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
+    setIsLoading(true);
     newsApi.get(`/articles/${article_id}`).then((result) => {
+      setIsLoading(false);
       setArticle(result.data.article);
     });
   }, [article_id]);
+
+  if (isLoading) {
+    return <h3>Loading Page...</h3>;
+  }
 
   return (
     <>

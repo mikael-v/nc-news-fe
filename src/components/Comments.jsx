@@ -10,12 +10,19 @@ const newsApi = axios.create({
 function Comments() {
   const { article_id } = useParams();
   const [comments, setComments] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     newsApi.get(`/articles/${article_id}/comments`).then((result) => {
+      setIsLoading(false);
       setComments(result.data[0]);
     });
   }, [article_id]);
+
+  if (isLoading) {
+    return <h3>Loading Page...</h3>;
+  }
 
   function handleVotes(voteType, comment_id) {
     setComments((currentComments) =>
