@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import MaterialIcon from "react-google-material-icons";
 
 const newsApi = axios.create({
   baseURL: "https://nc-news-project-hvpy.onrender.com/api",
@@ -12,9 +11,9 @@ function Comments() {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isShown, setIsShown] = useState(false);
-  const [addComment, setAddComment] = useState({});
-  const [commentBody, setCommentBody] = "";
-  const [author, setAuthor] = "";
+  // const [addComment, setAddComment] = useState({});
+  const [commentBody, setCommentBody] = useState("");
+  const [author, setAuthor] = useState("");
 
   useEffect(() => {
     setIsLoading(true);
@@ -28,30 +27,23 @@ function Comments() {
     return <h3>Loading Page...</h3>;
   }
 
-  function handleVotes(voteType, comment_id) {
-    setComments((currentComments) =>
-      currentComments.map((comment) =>
-        comment.comment_id === comment_id
-          ? {
-              ...comment,
-              votes:
-                voteType === "arrow_circle_up"
-                  ? comment.votes + 1
-                  : comment.votes - 1,
-            }
-          : comment
-      )
-    );
-  }
-
   function postComment(event) {
     event.preventDefault();
-    setAddComment({
+    const newComment = {
       body: commentBody,
       author: author,
       votes: 0,
-      created_at: Date.now(),
-    });
+      created_at: new Date().toISOString(),
+    };
+
+    newsApi
+      .post(`/articles/${article_id}/comments`, newComment)
+      .then((result) => {
+        setComments((currComments) => [result.data[0], ...currComments]);
+        setCommentBody("");
+        setAuthor("");
+        setIsShown(false);
+      });
   }
 
   function toggleShow() {
@@ -60,7 +52,6 @@ function Comments() {
 
   return (
     <>
-      {console.log(Date.now())}
       <div id="comments-bar">
         <h1>Comments</h1>
       </div>
@@ -68,17 +59,30 @@ function Comments() {
         {isShown ? "Hide Comment Form" : "Post Comment"}
       </button>
       {isShown && (
-        <fieldset id="comment-form">
+        <form id="comment-form" onSubmit={postComment}>
           <div id="username">
             <label htmlFor="username">Username: </label>
-            <input required type="text" name="username" id="username" />
+            <input
+              value={author}
+              required
+              type="text"
+              name="username"
+              id="username"
+              onChange={(e) => setAuthor(e.target.value)}
+            />
           </div>
           <label htmlFor="textbox">Comment:</label>
-          <textarea name="textbox" id="textbox" required />
-          <button type="submit" id="submit-comment" onClick={postComment}>
+          <textarea
+            value={commentBody}
+            name="textbox"
+            id="textbox"
+            required
+            onChange={(e) => setCommentBody(e.target.value)}
+          />
+          <button type="submit" id="submit-comment">
             Post
           </button>
-        </fieldset>
+        </form>
       )}
       <ul id="comments-list">
         {comments.map((comment) => (
@@ -86,32 +90,7 @@ function Comments() {
             <p>author: {comment.author}</p>
             <p>created at: {new Date(comment.created_at).toLocaleString()}</p>
             <p>{comment.body}</p>
-            <div id="votes">
-              <button
-                onClick={() =>
-                  handleVotes("arrow_circle_up", comment.comment_id)
-                }
-                className="vote-button"
-                type="button"
-              >
-                <MaterialIcon
-                  className="vote_up"
-                  icon="arrow_circle_up"
-                  size={36}
-                />
-              </button>
-
-              <p>votes: {comment.votes}</p>
-              <button
-                onClick={() =>
-                  handleVotes("arrow_circle_down", comment.comment_id)
-                }
-                className="vote-button"
-                type="button"
-              >
-                <MaterialIcon icon="arrow_circle_down" size={36} />
-              </button>
-            </div>
+            <p>Votes: {comment.votes}</p>
           </li>
         ))}
       </ul>
