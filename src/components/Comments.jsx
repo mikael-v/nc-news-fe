@@ -15,9 +15,6 @@ function Comments() {
     });
   }, [article_id]);
 
-  {
-  }
-
   return (
     <>
       <h1>Comments</h1>
