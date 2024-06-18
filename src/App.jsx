@@ -1,13 +1,16 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header.jsx";
+import OneArticle from "./components/OneArticle.jsx";
 
 function App() {
   return (
     <>
-      <Header />
       <BrowserRouter>
-        <Routes></Routes>
+        <Header />
+        <Routes>
+          <Route path="/api/articles/:article_id" element={<OneArticle />} />
+        </Routes>
       </BrowserRouter>
     </>
   );
