@@ -26,8 +26,8 @@ function OneArticle() {
   }
 
   function handleVotes(voteType, article_id) {
-    const newVotes =
-      voteType === "arrow_circle_up" ? article.votes + 1 : article.votes - 1;
+    const voteChange = voteType === "arrow_circle_up" ? 1 : -1;
+    const newVotes = article.votes + voteChange;
 
     setArticle((currArticle) => ({
       ...currArticle,
@@ -35,9 +35,7 @@ function OneArticle() {
     }));
 
     newsApi
-      .patch(`/articles/${article_id}`, {
-        inc_votes: voteType === "arrow_circle_up" ? 1 : -1,
-      })
+      .patch(`/articles/${article_id}`, { inc_votes: voteChange })
       .then((result) => {
         setArticle(result.data.article);
       });
