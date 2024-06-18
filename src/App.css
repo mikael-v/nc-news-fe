@@ -26,3 +26,21 @@ li {
 li img {
   width: 300px;
 }
+
+#comments-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+#votes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.vote-button {
+  background-color: #808080;
+}
