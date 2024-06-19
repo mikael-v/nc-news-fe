@@ -24,22 +24,6 @@ function Comments() {
     return <h3>Loading Page...</h3>;
   }
 
-  // function handleVotes(voteType, comment_id) {
-  //   setComments((currentComments) =>
-  //     currentComments.map((comment) =>
-  //       comment.comment_id === comment_id
-  //         ? {
-  //             ...comment,
-  //             votes:
-  //               voteType === "arrow_circle_up"
-  //                 ? comment.votes + 1
-  //                 : comment.votes - 1,
-  //           }
-  //         : comment
-  //     )
-  //   );
-  // }
-
   return (
     <>
       <h1>Comments</h1>
