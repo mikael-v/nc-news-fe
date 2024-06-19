@@ -11,9 +11,15 @@ function Comments() {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isShown, setIsShown] = useState(false);
-  const [addComment, setAddComment] = useState({});
   const [commentBody, setCommentBody] = useState("");
   const [author, setAuthor] = useState("");
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    newsApi.get("/users").then((result) => {
+      setUsers(result.data);
+    });
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -28,27 +34,24 @@ function Comments() {
   }
 
   function postComment(event) {
-    const date = new Date();
-    let formattedDate = date.toISOString().toLocaleString();
     event.preventDefault();
-    const newComment = {
-      body: commentBody,
-      article_id: article_id,
-      author: author,
-      votes: 0,
-      created_at: formattedDate,
-      // comment_id: 
-    };
-
-    setAddComment(newComment, " <<NEW");
-
-    if (Object.keys(addComment).length > 1) {
-      console.log(addComment);
-      newsApi.post(`/articles/${article_id}/comments`, newComment).then(() => {
-        setCommentBody("");
-        setAuthor("");
-        setIsShown(false);
-      });
+    const isAuthorValid = users.some((user) => user.username === author);
+    if (isAuthorValid) {
+      newsApi
+        .post(`/articles/${article_id}/comments`, {
+          body: commentBody,
+          username: author,
+        })
+        .then(({ data }) => {
+          setCommentBody("");
+          setAuthor("");
+          setIsShown(false);
+          setComments((currentComments) => {
+            return [data.comment, ...currentComments];
+          });
+        });
+    } else {
+      alert("Invalid User!");
     }
   }
 
@@ -95,7 +98,6 @@ function Comments() {
             <p>author: {comment.author}</p>
             <p>created at: {new Date(comment.created_at).toLocaleString()}</p>
             <p>{comment.body}</p>
-
             <p>Votes: {comment.votes}</p>
           </li>
         ))}
