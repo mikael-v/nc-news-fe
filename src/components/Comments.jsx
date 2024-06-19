@@ -11,7 +11,7 @@ function Comments() {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isShown, setIsShown] = useState(false);
-  // const [addComment, setAddComment] = useState({});
+  const [addComment, setAddComment] = useState({});
   const [commentBody, setCommentBody] = useState("");
   const [author, setAuthor] = useState("");
 
@@ -28,22 +28,28 @@ function Comments() {
   }
 
   function postComment(event) {
+    const date = new Date();
+    let formattedDate = date.toISOString().toLocaleString();
     event.preventDefault();
     const newComment = {
       body: commentBody,
+      article_id: article_id,
       author: author,
       votes: 0,
-      created_at: new Date().toUTCString(),
+      created_at: formattedDate,
+      // comment_id: 
     };
 
-    newsApi
-      .post(`/articles/${article_id}/comments`, newComment)
-      .then((result) => {
-        setComments((currComments) => [result.data[0], ...currComments]);
+    setAddComment(newComment, " <<NEW");
+
+    if (Object.keys(addComment).length > 1) {
+      console.log(addComment);
+      newsApi.post(`/articles/${article_id}/comments`, newComment).then(() => {
         setCommentBody("");
         setAuthor("");
         setIsShown(false);
       });
+    }
   }
 
   function toggleShow() {
@@ -67,7 +73,6 @@ function Comments() {
               required
               type="text"
               name="username"
-              id="username"
               onChange={(e) => setAuthor(e.target.value)}
             />
           </div>
@@ -90,6 +95,7 @@ function Comments() {
             <p>author: {comment.author}</p>
             <p>created at: {new Date(comment.created_at).toLocaleString()}</p>
             <p>{comment.body}</p>
+
             <p>Votes: {comment.votes}</p>
           </li>
         ))}
