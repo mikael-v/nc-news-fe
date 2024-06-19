@@ -33,7 +33,7 @@ function Comments() {
       body: commentBody,
       author: author,
       votes: 0,
-      created_at: new Date().toISOString(),
+      created_at: new Date().toUTCString(),
     };
 
     newsApi
