@@ -5,7 +5,7 @@ const newsApi = axios.create({
   baseURL: "https://nc-news-project-hvpy.onrender.com/api",
 });
 
-function DeleteComment({ comment, article_id }) {
+function DeleteComment({ comment }) {
   const [isShown, setIsShown] = useState(false);
   const [author, setAuthor] = useState("");
 

@@ -7,48 +7,15 @@ import OneArticle from "./components/OneArticle.jsx";
 import Comments from "./components/Comments.jsx";
 
 function App() {
-  const [articleCategory, setArticleCategory] = useState("");
-
   return (
     <>
-      <Header
-        setArticleCategory={setArticleCategory}
-        articleCategory={articleCategory}
-      />
+      <Header />
       <BrowserRouter>
         <Routes>
-          <Route
-            path="/"
-            element={
-              <Articles
-                setArticleCategory={setArticleCategory}
-                articleCategory={articleCategory}
-              />
-            }
-          />
-          <Route
-            path="/api"
-            element={
-              <Articles
-                setArticleCategory={setArticleCategory}
-                articleCategory={articleCategory}
-              />
-            }
-          />
-          <Route
-            path="/api/articles"
-            element={
-              <Articles
-                setArticleCategory={setArticleCategory}
-                articleCategory={articleCategory}
-              />
-            }
-          />
-          <Route path="/api/articles/:article_id" element={<OneArticle />} />
-          <Route
-            path="/api/articles/:article_id/comments"
-            element={<Comments />}
-          />
+          <Route path="/" element={<Articles />} />
+          <Route path="/articles" element={<Articles />} />
+          <Route path="/articles/:article_id" element={<OneArticle />} />
+          <Route path="/articles/:article_id/comments" element={<Comments />} />
         </Routes>
       </BrowserRouter>
     </>
