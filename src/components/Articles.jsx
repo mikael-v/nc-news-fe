@@ -20,12 +20,10 @@ function Articles({ articleCategory }) {
     } else {
       newsApi.get(`/articles?topic=${articleCategory}`).then((result) => {
         setIsLoading(false);
-        setArticles(result.data.articles);
+        setArticles(result.data);
       });
     }
   }, [articleCategory]);
-
-  console.log(articles);
 
   if (isLoading === true) {
     return <h3>Loading Page...</h3>;
@@ -36,7 +34,7 @@ function Articles({ articleCategory }) {
       <h1>Articles</h1>
       <ul>
         {articles.map((article) => (
-          <Link to={`/articles/${article.article_id}`}>
+          <Link to={`/articles/${article.article_id}`} key={article.article_id}>
             <li key={article.article_id}>
               <h2>{article.title}</h2>
               <h3>{article.author}</h3>
