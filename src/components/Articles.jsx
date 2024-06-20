@@ -9,45 +9,69 @@ const newsApi = axios.create({
 function Articles({ articleCategory }) {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isAsc, setIsAsc] = useState("ASC");
+  const [sortBy, setSortBy] = useState("created_at");
+  const [order, setOrder] = useState("desc");
 
   useEffect(() => {
     setIsLoading(true);
-    if (articleCategory === "") {
-      newsApi.get("/articles").then((result) => {
-        setIsLoading(false);
-        setArticles(result.data.articles);
-      });
-    } else {
-      newsApi.get(`/articles?topic=${articleCategory}`).then((result) => {
-        setIsLoading(false);
-        setArticles(result.data);
-      });
-    }
+    const params = articleCategory ? { topic: articleCategory } : {};
+
+    newsApi.get("/articles", { params }).then((result) => {
+      setIsLoading(false);
+      const fetchedArticles = articleCategory
+        ? result.data
+        : result.data.articles;
+      setArticles(fetchedArticles);
+    });
   }, [articleCategory]);
+
+  function sortArticles(articles) {
+    return articles.sort((a, b) => {
+      if (order === "desc") {
+        return a[sortBy] < b[sortBy] ? 1 : -1;
+      } else {
+        return a[sortBy] > b[sortBy] ? 1 : -1;
+      }
+    });
+  }
+
+  function toggleOrder() {
+    setOrder((prevOrder) => (prevOrder === "desc" ? "asc" : "desc"));
+  }
+
+  const handleSortChange = (e) => {
+    setSortBy(e.target.value);
+  };
+
+  const sortedArticles = sortArticles([...articles]);
 
   if (isLoading === true) {
     return <h3>Loading Page...</h3>;
   }
 
-  function toggleOrder() {
-    setIsAsc(!isAsc);
-  }
-
   return (
     <>
       <h1>Articles</h1>
-      <select name="sort" id="sort">
-        <option value="default">SORT BY</option>
-        <option value="">Date</option>
-        <option value="">Votes</option>
-        <option value="">Comment Count</option>
-      </select>
+      <div>
+        <label htmlFor="sort">Sort by: </label>
+        <select
+          name="sort"
+          id="sort"
+          value={sortBy}
+          onChange={handleSortChange}
+        >
+          <option value="default">SORT BY</option>
+          <option value="created_at">Date</option>
+          <option value="votes">Votes</option>
+          <option value="comment_count">Comment Count</option>
+        </select>
+      </div>
       <button id="order-button" type="button" onClick={toggleOrder}>
-        {isAsc ? "DESC" : "ASC"}
+        {order === "desc" ? "DESC" : "ASC"}
       </button>
+
       <ul>
-        {articles.map((article) => (
+        {sortedArticles.map((article) => (
           <Link to={`/articles/${article.article_id}`} key={article.article_id}>
             <li key={article.article_id}>
               <h2>{article.title}</h2>
