@@ -12,13 +12,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Articles />} />
-          <Route path="/api" element={<Articles />} />
-          <Route path="/api/articles" element={<Articles />} />
-          <Route path="/api/articles/:article_id" element={<OneArticle />} />
-          <Route
-            path="/api/articles/:article_id/comments"
-            element={<Comments />}
-          />
+          <Route path="/articles" element={<Articles />} />
+          <Route path="/articles/:article_id" element={<OneArticle />} />
+          <Route path="/articles/:article_id/comments" element={<Comments />} />
         </Routes>
       </BrowserRouter>
     </>

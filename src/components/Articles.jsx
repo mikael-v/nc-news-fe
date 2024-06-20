@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-
+import { Link } from "react-router-dom";
 
 const newsApi = axios.create({
   baseURL: "https://nc-news-project-hvpy.onrender.com/api",
@@ -26,13 +26,17 @@ function Articles() {
       <h1>All Articles</h1>
       <ul>
         {articles.map((article) => (
-          <li key={article.article_id}>
-            <h2>{article.title}</h2>
-            <h3>{article.author}</h3>
-            <img src={`${article.article_img_url}`} alt="article cover image" />
-            <p>Topic: {article.topic}</p>
-            
-          </li>
+          <Link to={`/articles/${article.article_id}`}>
+            <li key={article.article_id}>
+              <h2>{article.title}</h2>
+              <h3>{article.author}</h3>
+              <img
+                src={`${article.article_img_url}`}
+                alt="article cover image"
+              />
+              <p>Topic: {article.topic}</p>
+            </li>
+          </Link>
         ))}
       </ul>
     </>
