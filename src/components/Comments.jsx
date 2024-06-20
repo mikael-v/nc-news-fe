@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import PostComment from "./PostComment.jsx";
 
 const newsApi = axios.create({
   baseURL: "https://nc-news-project-hvpy.onrender.com/api",
@@ -10,9 +11,6 @@ function Comments() {
   const { article_id } = useParams();
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isShown, setIsShown] = useState(false);
-  const [commentBody, setCommentBody] = useState("");
-  const [author, setAuthor] = useState("");
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -33,30 +31,10 @@ function Comments() {
     return <h3>Loading Page...</h3>;
   }
 
-  function postComment(event) {
-    event.preventDefault();
-    const isAuthorValid = users.some((user) => user.username === author);
-    if (isAuthorValid) {
-      newsApi
-        .post(`/articles/${article_id}/comments`, {
-          body: commentBody,
-          username: author,
-        })
-        .then(({ data }) => {
-          setCommentBody("");
-          setAuthor("");
-          setIsShown(false);
-          setComments((currentComments) => {
-            return [data.comment, ...currentComments];
-          });
-        });
-    } else {
-      alert("Invalid User!");
-    }
-  }
-
-  function toggleShow() {
-    setIsShown(!isShown);
+  function addComment(comment) {
+    setComments((currentComments) => {
+      return [comment, ...currentComments];
+    });
   }
 
   return (
@@ -64,34 +42,11 @@ function Comments() {
       <div id="comments-bar">
         <h1>Comments</h1>
       </div>
-      <button id="post-button" type="button" onClick={toggleShow}>
-        {isShown ? "Hide Comment Form" : "Post Comment"}
-      </button>
-      {isShown && (
-        <form id="comment-form" onSubmit={postComment}>
-          <div id="username">
-            <label htmlFor="username">Username: </label>
-            <input
-              value={author}
-              required
-              type="text"
-              name="username"
-              onChange={(e) => setAuthor(e.target.value)}
-            />
-          </div>
-          <label htmlFor="textbox">Comment:</label>
-          <textarea
-            value={commentBody}
-            name="textbox"
-            id="textbox"
-            required
-            onChange={(e) => setCommentBody(e.target.value)}
-          />
-          <button type="submit" id="submit-comment">
-            Post
-          </button>
-        </form>
-      )}
+      <PostComment
+        article_id={article_id}
+        users={users}
+        addComment={addComment}
+      />
       <ul id="comments-list">
         {comments.map((comment) => (
           <li key={comment.comment_id}>
