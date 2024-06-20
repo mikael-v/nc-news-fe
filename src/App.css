@@ -17,9 +17,7 @@ body {
   margin-top: 5px;
 }
 
-.nav-button button {
-  padding: 5px;
-}
+
 
 all-articles {
   display: flex;

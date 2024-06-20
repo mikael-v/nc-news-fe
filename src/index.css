@@ -13,6 +13,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.nav-button {
+  padding: 5px;
+  border-radius: 0px;
+  background-color: #f0f8ff;
+  color: #242424;
+  gap: 5px;
+  font-size: 19px;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
