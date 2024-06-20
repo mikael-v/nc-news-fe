@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PostComment from "./PostComment.jsx";
+import DeleteComment from "./DeleteComment.jsx";
 
 const newsApi = axios.create({
   baseURL: "https://nc-news-project-hvpy.onrender.com/api",
@@ -37,6 +38,14 @@ function Comments() {
     });
   }
 
+  function removeComment(comment_id) {
+    setComments((currentComments) => {
+      return currentComments.filter(
+        (comment) => comment.comment_id !== comment_id
+      );
+    });
+  }
+
   return (
     <>
       <div id="comments-bar">
@@ -54,6 +63,13 @@ function Comments() {
             <p>created at: {new Date(comment.created_at).toLocaleString()}</p>
             <p>{comment.body}</p>
             <p>Votes: {comment.votes}</p>
+            <p>id: {comment.comment_id}</p>
+            <DeleteComment
+              article_id={article_id}
+              comment={comment}
+              removeComment={removeComment}
+              users={users}
+            />
           </li>
         ))}
       </ul>

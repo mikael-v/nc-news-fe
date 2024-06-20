@@ -13,6 +13,7 @@ function PostComments({ article_id, users, addComment }) {
   function postComment(event) {
     event.preventDefault();
     const isAuthorValid = users.some((user) => user.username === author);
+    
     if (isAuthorValid) {
       newsApi
         .post(`/articles/${article_id}/comments`, {
