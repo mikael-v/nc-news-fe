@@ -9,14 +9,17 @@ function Header({ setArticleCategory }) {
     <div id="header">
       <h1 id="title">NC News</h1>
       <nav id="header-nav" onClick={handleClick}>
+        <button value={""} className="nav-button" type="button">
+          Home
+        </button>
         <button value={"coding"} className="nav-button" type="button">
-          coding
+          Coding
         </button>
         <button value={"football"} className="nav-button" type="button">
-          football
+          Football
         </button>
         <button value={"cooking"} className="nav-button" type="button">
-          cooking
+          Cooking
         </button>
       </nav>
     </div>

@@ -63,7 +63,6 @@ function Comments() {
             <p>created at: {new Date(comment.created_at).toLocaleString()}</p>
             <p>{comment.body}</p>
             <p>Votes: {comment.votes}</p>
-            <p>id: {comment.comment_id}</p>
             <DeleteComment
               article_id={article_id}
               comment={comment}

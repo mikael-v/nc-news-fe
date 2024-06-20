@@ -9,6 +9,7 @@ const newsApi = axios.create({
 function Articles({ articleCategory }) {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAsc, setIsAsc] = useState("ASC");
 
   useEffect(() => {
     setIsLoading(true);
@@ -29,9 +30,22 @@ function Articles({ articleCategory }) {
     return <h3>Loading Page...</h3>;
   }
 
+  function toggleOrder() {
+    setIsAsc(!isAsc);
+  }
+
   return (
     <>
       <h1>Articles</h1>
+      <select name="sort" id="sort">
+        <option value="default">SORT BY</option>
+        <option value="">Date</option>
+        <option value="">Votes</option>
+        <option value="">Comment Count</option>
+      </select>
+      <button id="order-button" type="button" onClick={toggleOrder}>
+        {isAsc ? "DESC" : "ASC"}
+      </button>
       <ul>
         {articles.map((article) => (
           <Link to={`/articles/${article.article_id}`} key={article.article_id}>
