@@ -1,14 +1,22 @@
 function Header() {
   return (
-    <>
-      <h1>NC News</h1>
-      <nav>
-        <button type="button">coding</button>
-        <button type="button">football</button>
-        <button type="button">cooking</button>
-        <button type="button">users</button>
+    <div id="header">
+      <h1 id="title">NC News</h1>
+      <nav id="header-nav">
+        <button className="nav-button" type="button">
+          coding
+        </button>
+        <button className="nav-button" type="button">
+          football
+        </button>
+        <button className="nav-button" type="button">
+          cooking
+        </button>
+        <button className="nav-button" type="button">
+          users
+        </button>
       </nav>
-    </>
+    </div>
   );
 }
 
