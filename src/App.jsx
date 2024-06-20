@@ -12,6 +12,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Articles />} />
+          <Route path="/api" element={<Articles />} />
           <Route path="/api/articles" element={<Articles />} />
           <Route path="/api/articles/:article_id" element={<OneArticle />} />
           <Route
