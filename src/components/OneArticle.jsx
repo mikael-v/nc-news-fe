@@ -51,6 +51,8 @@ function OneArticle() {
     <>
       <h1>{article.title}</h1>
       <h2>{article.author}</h2>
+      <p>Created At: {new Date(article.created_at).toLocaleString()}</p>
+
       <img src={`${article.article_img_url}`} alt="article cover" />
       <p>{article.body}</p>
       <p>Topic: {article.topic}</p>

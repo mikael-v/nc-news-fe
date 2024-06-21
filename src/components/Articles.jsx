@@ -76,6 +76,8 @@ function Articles({ articleCategory }) {
             <li key={article.article_id}>
               <h2>{article.title}</h2>
               <h3>{article.author}</h3>
+              <p>Created At: {new Date(article.created_at).toLocaleString()}</p>
+
               <img
                 src={`${article.article_img_url}`}
                 alt="article cover image"
