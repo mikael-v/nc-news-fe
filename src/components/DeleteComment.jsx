@@ -9,7 +9,7 @@ function DeleteComment({ comment }) {
   const [isShown, setIsShown] = useState(false);
   const [author, setAuthor] = useState("");
 
-  function removeComment(event) {
+  function removeComment() {
     const validAuthor = comment.author;
 
     if (validAuthor === author) {
