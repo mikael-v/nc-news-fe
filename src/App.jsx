@@ -10,37 +10,35 @@ function App() {
   const [articleCategory, setArticleCategory] = useState("");
 
   return (
-    <>
+    <BrowserRouter>
       <Header
         setArticleCategory={setArticleCategory}
         articleCategory={articleCategory}
       />
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Articles
-                setArticleCategory={setArticleCategory}
-                articleCategory={articleCategory}
-              />
-            }
-          />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Articles
+              setArticleCategory={setArticleCategory}
+              articleCategory={articleCategory}
+            />
+          }
+        />
 
-          <Route
-            path="/articles"
-            element={
-              <Articles
-                setArticleCategory={setArticleCategory}
-                articleCategory={articleCategory}
-              />
-            }
-          />
-          <Route path="/articles/:article_id" element={<OneArticle />} />
-          <Route path="/articles/:article_id/comments" element={<Comments />} />
-        </Routes>
-      </BrowserRouter>
-    </>
+        <Route
+          path="/articles"
+          element={
+            <Articles
+              setArticleCategory={setArticleCategory}
+              articleCategory={articleCategory}
+            />
+          }
+        />
+        <Route exact path="/articles/:article_id" element={<OneArticle />} />
+        <Route path="/articles/:article_id/comments" element={<Comments />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

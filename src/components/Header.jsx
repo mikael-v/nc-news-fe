@@ -1,8 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function Header({ setArticleCategory }) {
+  const navigate = useNavigate();
+
   const handleClick = (event) => {
-    setArticleCategory(event.target.value);
+    const topic = event.target.value;
+    setArticleCategory(topic);
+    navigate(`/articles?topic=${topic}`);
   };
 
   return (

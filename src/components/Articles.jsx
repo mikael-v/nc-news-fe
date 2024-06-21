@@ -1,29 +1,39 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 
 const newsApi = axios.create({
   baseURL: "https://nc-news-project-hvpy.onrender.com/api",
 });
 
-function Articles({ articleCategory }) {
+function Articles() {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [sortBy, setSortBy] = useState("created_at");
   const [order, setOrder] = useState("desc");
+  const [error, setError] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const topic = searchParams.get("topic");
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true);
-    const params = articleCategory ? { topic: articleCategory } : {};
+    setError(null);
+    const params = topic ? { topic } : {};
 
-    newsApi.get("/articles", { params }).then((result) => {
-      setIsLoading(false);
-      const fetchedArticles = articleCategory
-        ? result.data
-        : result.data.articles;
-      setArticles(fetchedArticles);
-    });
-  }, [articleCategory]);
+    newsApi
+      .get("/articles", { params })
+      .then((result) => {
+        setIsLoading(false);
+        const fetchedArticles = topic ? result.data : result.data.articles;
+        setArticles(fetchedArticles);
+      })
+      .catch((error) => {
+        console.log(error.response.data.msg);
+        setIsLoading(false);
+        setError(error.response.data.msg);
+      });
+  }, [topic]);
 
   function sortArticles(articles) {
     return articles.sort((a, b) => {
@@ -49,6 +59,26 @@ function Articles({ articleCategory }) {
     return <h3>Loading Page...</h3>;
   }
 
+  if (error) {
+    return (
+      <>
+        <h2>{error}</h2>
+      </>
+    );
+  }
+
+  function handleClick() {
+    navigate("/");
+  }
+
+  if (error) {
+    return (
+      <>
+        <h2>{error}</h2>
+      </>
+    );
+  }
+
   return (
     <>
       <h1>Articles</h1>
@@ -69,7 +99,6 @@ function Articles({ articleCategory }) {
       <button id="order-button" type="button" onClick={toggleOrder}>
         {order === "desc" ? "DESC" : "ASC"}
       </button>
-
       <ul>
         {sortedArticles.map((article) => (
           <Link to={`/articles/${article.article_id}`} key={article.article_id}>
