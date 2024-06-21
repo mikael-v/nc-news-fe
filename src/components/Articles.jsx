@@ -29,7 +29,6 @@ function Articles() {
         setArticles(fetchedArticles);
       })
       .catch((error) => {
-        console.log(error.response.data.msg);
         setIsLoading(false);
         setError(error.response.data.msg);
       });
