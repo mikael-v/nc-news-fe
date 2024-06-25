@@ -19,8 +19,6 @@ function OneComment() {
     });
   }, [article_id]);
 
-  console.log(comments, " <<comments");
-
   const comment = comments.filter((c) => c.comment_id === Number(comment_id));
 
   if (isLoading) {

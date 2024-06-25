@@ -6,9 +6,12 @@ import Header from "./components/Header.jsx";
 import OneArticle from "./components/OneArticle.jsx";
 import Comments from "./components/Comments.jsx";
 import NotFound from "./components/NotFound.jsx";
+import UserLogin from "./components/UserLogin.jsx";
 
 function App() {
   const [articleCategory, setArticleCategory] = useState("");
+  const [currentUsername, setCurrentUsername] = useState("");
+  const [currentUser, setcurrentUser] = useState("");
 
   return (
     <BrowserRouter>
@@ -20,9 +23,11 @@ function App() {
         <Route
           path="/"
           element={
-            <Articles
-              setArticleCategory={setArticleCategory}
-              articleCategory={articleCategory}
+            <UserLogin
+              setcurrentUsername={setCurrentUsername}
+              currentUsername={currentUsername}
+              setcurrentUser={setcurrentUser}
+              currentUser={currentUser}
             />
           }
         />
@@ -37,7 +42,17 @@ function App() {
           }
         />
         <Route exact path="/articles/:article_id" element={<OneArticle />} />
-        <Route path="/articles/:article_id/comments" element={<Comments />} />
+        <Route
+          path="/articles/:article_id/comments"
+          element={
+            <Comments
+              setcurrentUsername={setCurrentUsername}
+              currentUsername={currentUsername}
+              setcurrentUser={setcurrentUser}
+              currentUser={currentUser}
+            />
+          }
+        />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
