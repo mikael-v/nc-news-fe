@@ -1,7 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import MaterialIcon from "react-google-material-icons";
+import PostComment from "./PostComment.jsx";
+import DeleteComment from "./DeleteComment.jsx";
 
 const newsApi = axios.create({
   baseURL: "https://nc-news-project-hvpy.onrender.com/api",
@@ -11,6 +12,13 @@ function Comments() {
   const { article_id } = useParams();
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    newsApi.get("/users").then((result) => {
+      setUsers(result.data);
+    });
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -20,20 +28,47 @@ function Comments() {
     });
   }, [article_id]);
 
-  if (isLoading) {
+  if (isLoading === true) {
     return <h3>Loading Page...</h3>;
+  }
+
+  function addComment(comment) {
+    setComments((currentComments) => {
+      return [comment, ...currentComments];
+    });
+  }
+
+  function removeComment(comment_id) {
+    setComments((currentComments) => {
+      return currentComments.filter(
+        (comment) => comment.comment_id !== comment_id
+      );
+    });
   }
 
   return (
     <>
-      <h1>Comments</h1>
+      <div id="comments-bar">
+        <h1>Comments</h1>
+      </div>
+      <PostComment
+        article_id={article_id}
+        users={users}
+        addComment={addComment}
+      />
       <ul id="comments-list">
         {comments.map((comment) => (
           <li key={comment.comment_id}>
             <p>author: {comment.author}</p>
             <p>created at: {new Date(comment.created_at).toLocaleString()}</p>
             <p>{comment.body}</p>
-            <p>votes: {comment.votes}</p>
+            <p>Votes: {comment.votes}</p>
+            <DeleteComment
+              article_id={article_id}
+              comment={comment}
+              removeComment={removeComment}
+              users={users}
+            />
           </li>
         ))}
       </ul>
